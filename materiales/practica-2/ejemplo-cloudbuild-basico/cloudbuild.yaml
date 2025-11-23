@@ -1,0 +1,43 @@
+# Cloud Build configuration - Ejemplo básico
+# Construye imagen Docker y la publica en Artifact Registry
+# Nota: SHORT_SHA solo está disponible cuando se ejecuta desde un trigger de Git
+# Para ejecución manual, se usa BUILD_ID directamente en los tags
+
+steps:
+  # Paso 1: Construir la imagen Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/app-info-service:${BUILD_ID}'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/app-info-service:latest'
+      - '.'
+    dir: 'materiales/practica-1/ejemplo-app-info-service'
+
+  # Paso 2: Publicar la imagen en Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '--all-tags'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/app-info-service'
+
+# Configuración de imágenes a construir
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/app-info-service:${BUILD_ID}'
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/app-info-service:latest'
+
+# Substitutions (variables personalizadas)
+substitutions:
+  _REGION: 'europe-west1'
+  _REPO_NAME: 'docker-repo'
+  # Nota: BUILD_ID se usa directamente en los tags (no en substitutions) porque siempre está disponible.
+  # Para triggers de Git, puedes cambiar BUILD_ID por SHORT_SHA en los tags si prefieres usar el commit SHA.
+
+# Opciones de build
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+
+# Timeout del build (en segundos)
+timeout: '1200s'

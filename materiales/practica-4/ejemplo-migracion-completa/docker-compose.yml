@@ -1,0 +1,29 @@
+# Docker Compose para desarrollo local
+# Versión local que será migrada a Cloud Run
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app-info-service
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_NAME=App Info Service
+      - ENVIRONMENT=development
+      - SECRET_MESSAGE=Este es un secreto de desarrollo local
+      - API_KEY=dev-api-key-local
+    volumes:
+      # Bind mount para desarrollo (hot reload)
+      - ./app.py:/app/app.py:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+

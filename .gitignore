@@ -1,0 +1,31 @@
+# Archivos sensibles
+.env
+*.key
+*.pem
+secrets/
+credentials/
+
+# Archivos temporales de Docker
+*.log
+.docker/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+
+# Archivos de editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
