@@ -24,7 +24,7 @@ steps:
 
   # Paso 3: Actualizar cloud run para la nueva imagen
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
