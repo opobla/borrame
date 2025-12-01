@@ -41,6 +41,7 @@ def info():
     """Información del contenedor y entorno"""
     return {
         'hostname': os.environ.get('HOSTNAME', 'unknown'),
+        'description': 'hola mundo',
         'environment': os.environ.get('ENVIRONMENT', 'not-set'),
         'app_name': os.environ.get('APP_NAME', 'not-set'),
         'port': os.environ.get('PORT', 'not-set')
